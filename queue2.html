@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>queue</title>
+	<style>
+        .node{
+            display:inline-block;
+            background-color: #cd4a48;
+            color: #f3f6f7;
+            font-size:0px;
+            width: 20px;
+            margin:5px;
+        }
+
+    </style>
+</head>
+<body>
+	<input type="text" id="num">
+	<button id="leftIn">左侧入</button>
+	<button id="rightIn">右侧入</button>
+	<button id="leftOut">左侧出</button>
+	<button id="rightOut">右侧出</button>
+	<div id="nodee" style="height: 105px"></div>
+	<button id="btnSort" style="margin-top:10px">排序</button>
+
+	<script type="text/javascript">
+		var queue=[];
+		var input=document.getElementById("num");
+		var div=document.getElementById("nodee");
+		var boxx=document.getElementsByClassName("node");
+
+	function createNum() {
+		var box=document.createElement("div");
+		box.setAttribute("class","node");
+		//box.innerHTML=input.value;
+		box.style.height=input.value+"px";
+		box.style.marginTop=(101-parseInt(box.style.height))+"px";
+		return box;
+	}
+
+
+	function LeftIn() {
+		if(boxx.length>60) {
+			alert("队列中元素数量超过60");
+		} else {
+			var box=createNum();
+			var num=parseInt(box.style.height);
+			if(num>=10&&num<=100) {
+				queue.unshift(parseInt(box.style.height));
+				div.insertBefore(box,div.firstChild);
+			} else {
+				alert("数字必须在10-100之间");
+			}
+		}
+		input.focus();
+		input.value="";
+	}
+	function RightIn() {
+		if(boxx.length>60) {
+			alert("队列中元素数量超过60");
+		} else {
+			var box=createNum();
+			var num=parseInt(box.style.height);
+			if(num>=10&&num<=100) {
+				queue.push(parseInt(box.style.height));
+				div.appendChild(box);
+			} else {
+				alert("数字必须在10-100之间");
+			}
+		}
+		input.focus();
+		input.value="";
+	}
+	function LeftOut() {
+		if(div.hasChildNodes()) {
+			queue.shift();
+			div.removeChild(div.firstChild);
+		} else {
+			alert("队列中没有数")
+		}
+	}
+	function RightOut() {
+		if(div.hasChildNodes()) {
+			queue.pop();
+			div.removeChild(div.lastChild);
+		} else {
+			alert("队列中没有数")
+		}
+	}
+	function sortItem() {
+		var t,i=0,j=1;
+		var time=null;
+		time=setInterval(run,50);
+		function run() {
+			if(i<queue.length) {
+				if(j<queue.length-1) {
+					if(queue[j]>queue[j+1]) {
+						t=queue[j];
+						queue[j]=queue[j+1];
+						queue[j+1]=t; 
+						div.innerHTML = ""; 
+						for(var k=0;k<queue.length;k++) {
+							var divv=document.createElement("div");
+							divv.setAttribute("class","node");
+							divv.style.height=queue[k]+"px";
+							divv.style.marginTop=(101-queue[k])+"px";
+							alert(divv.style.height);
+							div.appendChild(divv);
+						}
+					}
+					j++;
+				} else {
+					i++;
+					j=0;
+				}
+			} else {
+				clearInterval(time);
+				return;
+			}
+			// for(var i=0;i<boxx.length-1;i++) {
+			// 	for(var j=i+1;j<boxx.length;j++) {
+			// 		if(boxx[i].style.height>boxx[j].style.height) {
+			// 			t=boxx[i].style.height;
+			// 			boxx[i].style.height=boxx[j].style.height;
+			// 			boxx[j].style.height=t;
+			// 			t=boxx[i].style.marginTop;
+			// 			boxx[i].style.marginTop=boxx[j].style.marginTop
+			// 			boxx[j].style.marginTop=t;
+
+			// 		}
+			// 	}
+			// }
+		}
+	}
+
+
+
+
+	function init() {
+		var btnLeftIn=document.getElementById("leftIn");
+		btnLeftIn.onclick=function(){
+			LeftIn();
+		}
+		var btnRightIn=document.getElementById("rightIn");
+		btnRightIn.onclick=function(){
+			RightIn();
+		}
+		var btnLeftOut=document.getElementById("leftOut");
+		btnLeftOut.onclick=function(){
+			LeftOut();
+		}
+		var btnRightOut=document.getElementById("rightOut");
+		btnRightOut.onclick=function(){
+			RightOut();
+		}
+		var btnSort=document.getElementById("btnSort");
+		btnSort.onclick=function(){
+			sortItem();
+		}
+	}
+	init();
+	</script>
+</body>
+</html>
