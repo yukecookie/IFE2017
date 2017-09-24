@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="UTF-8">
+        <title>可视化排序 冒泡</title> 
+        <style> 
+            #boxes{ 
+				display: inline-block;
+                border:1px solid grey; 
+                width:1320px; 
+                height:300px; 
+                margin-top:10px; 
+                position:relative; 
+            } 
+            .box{ 
+				display: inline-block;
+                width:20px; 
+                margin:0 1px; 
+                position:relative; 
+            } 
+        </style> 
+    </head>
+    <body>
+        <div id="boxes"></div> 
+        <script> 
+            function random(){ 
+                var numbers = []; 
+                for (var i = 0; i < 60; i++) { 
+                    var number = Math.floor(Math.random() * 90 + 10); 
+                    numbers.push(number); 
+                    var pElement = document.createElement("div"); 
+                    var parentElement = document.getElementById("boxes"); 
+					   pElement.style.background="red";
+					   pElement.style.width=20+"px";
+					   pElement.style.display="inline-block";
+					   pElement.style.margin=5+"px";
+					   pElement.style.height=numbers[i] + "px";
+					   pElement.style.fontSize=0+"px";
+//                     pElement.style.left = i * 20 + i * 2 + "px"; 
+//                     pElement.style.top = 300 - 3 * number + "px"; 
+//                     pElement.style.height = 3 * number + "px"; 
+                    pElement.setAttribute("class","box"); 
+                    parentElement.appendChild(pElement); 
+                } 
+                return numbers;
+            } 
+            function sort(){ 
+                var numbers = random(); 
+                var parentElement = document.getElementById("boxes"); 
+                var i = 0, j = 0; 
+                var time = setInterval(function() { 
+                    if (i < numbers.length) { 
+                        if (j < numbers.length - i) { 
+                            if (numbers[j] > numbers[j + 1]) { 
+                                var temp = numbers[j]; 
+                                numbers[j] = numbers[j + 1]; 
+                                numbers[j + 1] = temp; 
+                                parentElement.innerHTML = ""; 
+                                for (var k = 0; k < numbers.length; k++) { 
+                                    var textNode = document.createTextNode(numbers[k]); 
+                                    var pElement = document.createElement("div"); 
+                                    pElement.appendChild(textNode); 
+										pElement.style.background="red";
+										pElement.style.width=20+"px";
+										pElement.style.display="inline-block";
+										pElement.style.margin=5+"px";
+										pElement.style.height=numbers[k] + "px";
+										pElement.style.fontSize=0+"px";
+//                                     pElement.style.left = k * 20 + k * 2 + "px"; 
+//                                     pElement.style.top = 300 - 3 * numbers[k] + "px"; 
+//                                     pElement.style.height = 3 * numbers[k] + "px"; 
+                                    pElement.setAttribute("class","box"); 
+                                    parentElement.appendChild(pElement); 
+                                }
+                            } 
+                            j++; 
+                        }
+                        else{ 
+                            i++; 
+                            j = 0; 
+                        } 
+                    } 
+                    else { 
+                        clearInterval(time); 
+                        return; 
+                    } 
+                }, 100);   
+            } 
+            sort(); 
+        </script> 
+</body>
+</html>
