@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>queue</title>
+	<style>
+        .node{
+            display:inline-block;
+            background-color: #cd4a48;
+            color: #f3f6f7;
+            font-size:20px;
+            text-align:center;
+            padding:5px;
+            margin:5px;
+            cursor:pointer;
+        }
+
+    </style>
+</head>
+<body>
+	<input type="text" id="num">
+	<button id="leftIn">左侧入</button>
+	<button id="rightIn">右侧入</button>
+	<button id="leftOut">左侧出</button>
+	<button id="rightOut">右侧出</button>
+	<div id="node"></div>
+
+	<script type="text/javascript">
+		var input=document.getElementById("num");
+		var div=document.getElementById("node");
+		
+	// function display() {
+	// 	var ul=document.getElementById("list");
+	// 	while(ul.childNodes.length>0) {
+	// 		ul.removeChild(ul.childNodes[0]);
+	// 	}
+	// 	for(var i=0;i<queue.length;i++) {
+	// 		var li=document.createElement("li");
+	// 		li.innerHTML=queue[i];
+	// 		ul.appendChild(li);
+	// 	}
+	// }
+
+
+	function LeftIn() {
+		if(!isNaN(input.value)) {
+			var box=document.createElement("div");
+			box.setAttribute('class', 'node');
+			box.innerHTML=input.value;
+			div.insertBefore(box,div.firstChild);
+		} else {
+			alert("请输入一个数");
+		}
+	// 	var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/ 
+	// 　　if (re.test(input.value)) {
+	// 		alert("yes");
+	// 	}else {
+	// 		alert("no");
+	// 	}    //正则表达式
+				
+	}
+	function RightIn() {
+		if(!isNaN(input.value)) {
+			var box=document.createElement("div");
+			box.setAttribute('class', 'node');
+			box.innerHTML=input.value;
+			div.appendChild(box);
+		} else {
+			alert("请输入一个数");
+		}
+	}
+	function LeftOut() {
+		if(div.hasChildNodes()) {
+			div.removeChild(div.firstChild);
+		} else {
+			alert("队列中没有数")
+		}
+	}
+	function RightOut() {
+		if(div.hasChildNodes()) {
+			div.removeChild(div.lastChild);
+		} else {
+			alert("队列中没有数")
+		}
+	}
+
+	function init() {
+		var btnLeftIn=document.getElementById("leftIn");
+		btnLeftIn.onclick=function(){
+			LeftIn();
+		}
+		var btnRightIn=document.getElementById("rightIn");
+		btnRightIn.onclick=function(){
+			RightIn();
+		}
+		var btnLeftOut=document.getElementById("leftOut");
+		btnLeftOut.onclick=function(){
+			LeftOut();
+		}
+		var btnRightOut=document.getElementById("rightOut");
+		btnRightOut.onclick=function(){
+			RightOut();
+		}
+	}
+	init();
+	</script>
+</body>
+</html>
