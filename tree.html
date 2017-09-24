@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>tree</title>
+	<style type="text/css">
+		.ancestor,.ggf,.gf,.fa,.son{
+			border:1px solid black;
+			padding: 5px;
+			margin:5px;
+			float: left;
+			box-sizing: content-box;
+		}
+		.ancestor{
+			width: 800px;
+			height: 600px;
+		}
+		.ggf{
+			width: 700px;
+			height: 250px;
+		}
+		.gf{
+			width: 320px;
+			height: 200px;
+		}
+		.fa{
+			width: 120px;
+			height: 150px;
+		}
+		.son{
+			width: 60px;
+			height: 30px;
+		}
+	</style>
+</head>
+<body>
+	<div class="ancestor">ancestor
+		<div class="ggf">1
+			<div class="gf">2
+				<div class="fa">3
+					<div class="son">4</div>
+					<div class="son">4</div>
+				</div>
+				<div class="fa">3
+					<div class="son">4</div>
+					<div class="son">4</div>
+				</div>
+			</div>
+			<div class="gf">2
+				<div class="fa">3
+					<div class="son">4</div>
+					<div class="son">4</div>
+				</div>
+				<div class="fa">3
+					<div class="son">4</div>
+					<div class="son">4</div>
+				</div>
+			</div>
+		</div>
+		<div class="ggf">1
+			<div class="gf">2
+				<div class="fa">3
+					<div class="son">4</div>
+					<div class="son">4</div>
+				</div>
+				<div class="fa">3
+					<div class="son">4</div>
+					<div class="son">4</div>
+				</div>
+			</div>
+			<div class="gf">2
+				<div class="fa">3
+					<div class="son">4</div>
+					<div class="son">4</div>
+				</div>
+				<div class="fa">3
+					<div class="son">4</div>
+					<div class="son">4</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<button id="front">前序</button>
+	<button id="mid">中序</button>
+	<button id="behind">后序</button>
+	<script type="text/javascript">
+		var treeNodes=[];
+		var treeAncestor=document.getElementsByClassName("ancestor")[0];
+		var time=null;
+
+		function preOrder(node) {
+			if(!(node==null)) {
+				treeNodes.push(node);
+				preOrder(node.firstElementChild);
+				preOrder(node.lastElementChild);
+			}
+		}
+		function inOrder(node) {
+			if(!(node==null)) {
+				inOrder(node.firstElementChild);
+				treeNodes.push(node);
+				inOrder(node.lastElementChild);
+			}
+		}
+		function lastOrder(node) {
+			if(!(node==null)) {
+				lastOrder(node.firstElementChild);
+				lastOrder(node.lastElementChild);
+				treeNodes.push(node);
+			}
+		}
+		function changeColor(){
+			var i=0;
+			treeNodes[i].style.backgroundColor="red";
+			time=setInterval(function(){
+				i++;
+				if(i<treeNodes.length){
+					treeNodes[i-1].style.backgroundColor="white";
+					treeNodes[i].style.backgroundColor="red";
+				} else {
+					clearInterval(time);
+					treeNodes[i].style.backgroundColor="white";
+				}
+			},700)
+		}
+		function reset() {
+			treeNodes=[];
+			clearInterval(time);
+			var divs=document.getElementsByTagName("div");
+			for(var i=0;i<divs.length;i++) {
+				divs[i].style.backgroundColor="white"
+			}
+		}
+		function init(){
+			var btnFront=document.getElementById("front");
+			btnFront.onclick=function(){
+				reset();
+				preOrder(treeAncestor);
+				changeColor();
+			}
+			var btnMid=document.getElementById("mid");
+			btnMid.onclick=function(){
+				reset();
+				inOrder(treeAncestor);
+				changeColor();
+			}
+			var btnBehind=document.getElementById("behind");
+			btnBehind.onclick=function(){
+				reset();
+				lastOrder(treeAncestor);
+				changeColor();
+			}
+		}
+
+
+
+		init();
+	</script>
+
+	
+</body>
+</html>
