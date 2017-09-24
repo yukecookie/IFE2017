@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>queue</title>
+	<style>
+		.nums {
+			display:inline-block;
+            background-color: #cd4a48;
+            color: #f3f6f7;
+            font-size:20px;
+            text-align:center;
+            padding:5px;
+            margin:5px;
+		}
+	</style>
+</head>
+<body>
+	<textarea id="area" placeholder="请输入字符并用不同符号分隔" rows="5" cols="25"></textarea>
+	<br>
+	<button id="insert" style="margin: 5px">插入</button>
+	<span style="margin: 5px">随机生成插入：</span>
+	<button id="leftIn" style="margin: 5px">左侧入</button>
+	<button id="rightIn" style="margin: 5px">右侧入</button>
+	<button id="leftOut" style="margin: 5px">左侧出</button>
+	<button id="rightOut" style="margin: 5px">右侧出</button>
+	<br>
+	<div id="box" style="height: 50px"></div>
+	<input id="in">
+	<button id="search">查询</button>
+	<div id="node"></div>
+	<script type="text/javascript">
+
+		var queue=[];
+		var box=document.getElementById("box");
+
+		function createNum(num) {
+			var textNode = document.createTextNode(num); 
+			var node=document.createElement("div");
+			node.setAttribute("class","nums");
+			node.appendChild(textNode); 
+			return node;
+		}
+		function insert() {
+			var textarea=document.getElementById("area");
+			var text=textarea.value;
+			var num=[];
+			text=text.replace(/[^0-9a-zA-Z]/g," ");
+			text=text.replace(/\s+/g, ' '); 
+			text=text.replace(/^\s+|\s+$/g,"");
+			var num = text.split(" ");
+			queue.concat(num);
+			queue.length=queue.length+num.length;
+			for(var i=0;i<num.length;i++) {
+				var node=createNum(num[i]);
+				box.appendChild(node);
+			}
+
+		}
+		function LeftIn() {
+			var num=Math.floor(Math.random()*100);
+			queue.unshift(num);
+			var node=createNum(num);
+			box.insertBefore(node,box.firstChild);
+		}
+		function RightIn() {
+			var num=Math.floor(Math.random()*100);
+			queue.push(num);
+			var node=createNum(num); 
+			box.appendChild(node);
+		}
+		function LeftOut() {
+			if(queue.length>0) {
+				queue.shift();
+				box.removeChild(box.firstChild);
+			} else {
+				alert("队列中没有数");
+			}
+		}
+		function RightOut() {
+			if(queue.length>0) {
+				queue.pop();
+				box.removeChild(box.lastChild);
+			} else {
+				alert("队列中没有数");
+			}
+		}
+
+		function search() {
+			var input=document.getElementById("in");
+			if(input.value!=null||input.value.length>0) {
+				for(var i=0;i<box.childNodes.length;i++) {
+					var num=box.childNodes[i];
+					var reg = new RegExp(input.value);
+					for(var j=0;j<num.innerHTML.length;j++) {
+						if(num.innerHTML[j].match(reg)) {
+						//if(!num.innerHTML[j].indexOf(input.value)) {
+							num.style.background="black";
+						}
+					}
+				}
+			}
+			
+		}
+		function init() { 
+			var btnLeftIn=document.getElementById("leftIn");
+			btnLeftIn.onclick=function(){
+				LeftIn();
+			}
+			var btnRightIn=document.getElementById("rightIn");
+			btnRightIn.onclick=function(){
+				RightIn();
+			}
+			var btnLeftOut=document.getElementById("leftOut");
+			btnLeftOut.onclick=function(){
+				LeftOut();
+			}
+			var btnRightOut=document.getElementById("rightOut");
+			btnRightOut.onclick=function(){
+				RightOut();
+			}
+			var btnInsert=document.getElementById("insert");
+			btnInsert.onclick=function(){
+				insert();
+			}
+			var btnSearch=document.getElementById("search");
+			btnSearch.onclick=function(){
+				search();
+			}
+		}
+		init();
+	</script>
+	
+</body>
+</html>
