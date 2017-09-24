@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>tree</title>
+	<style type="text/css">
+		.ancestor,.box{
+			border:1px solid black;
+			padding: 5px;
+			margin:5px;
+			font-size: 15px;
+			float: left;
+			box-sizing: content-box;
+		}
+		/*.ancestor{
+			width: 1500px;
+			height: 300px;
+		}
+		.ggf{
+			width: 400px;
+			height: 250px;
+		}
+		.gf{
+			width: 100px;
+			height: 150px;
+		}
+		.fa{
+			width: 20px;
+			height: 30px;
+		}
+		.son{
+			width: 10px;
+			height: 20px;
+		}*/
+	</style>
+</head>
+<body>
+	<div class="ancestor">super
+		<div class="box">car
+			<div class="box">apple
+				<div class="box">pear</div>
+				<div class="box">pig</div>
+				<div class="box">cola</div>
+				<div class="box">soccer</div>
+			</div>
+			<div class="box">phone</div>
+			<div class="box">dog
+				<div class="box">book</div>
+				<div class="box">school</div>
+			</div>
+		</div>
+		<div class="box">note
+			<div class="box">human
+				<div class="box">code</div>
+				<div class="box">operate</div>
+				<div class="box">man</div>
+			</div>
+			<div class="box">program
+				<div class="box">bement
+					<div class="box">cat</div>
+				</div>
+				<div class="box">glass</div>
+			</div>
+		</div>
+		<div class="box">fish</div>
+	</div>
+	<br><br>
+	<button id="front">先序遍历</button>
+	<button id="behind">后序遍历</button>
+	<br>
+	<input id="search">
+	<button id="searchNode">先序查找</button>
+	<button id="add">添加</button>
+	<button id="del">删除</button>
+	<!-- <button id="behindSearch">后序查找</button> -->
+	<script type="text/javascript">
+		var treeNodes=[];
+		var divsValue=[];
+		var divs=document.getElementsByTagName("div");
+		var treeAncestor=document.getElementsByClassName("ancestor")[0];
+		var time=null;
+		
+		divsValue=divs[0].innerText.split("\n");
+		for(var i=0;i<divsValue.length;i++) {
+			divsValue[i]=divsValue[i].replace(/(^\s*)|(\s*$)/g, "");
+		}
+
+		function preOrder(node) {
+			treeNodes.push(node);
+			for(var i=0;i<node.children.length;i++) {
+				preOrder((node.children[i]));
+			}
+		}
+		function lastOrder(node) {
+			for(var i=0;i<node.children.length;i++) {
+				lastOrder((node.children[i]));
+			}
+			treeNodes.push(node);
+		}
+		function Search() {
+			var searchNodee=document.getElementById("search");
+			for(var i=0;i<divsValue.length;i++) {
+				if(divsValue[i]==searchNodee.value) {
+					break;
+				}
+			}
+			//var i=divsValue.indexOf(searchNodee.value);
+			if(i>=0&&i<divsValue.length) {
+				divs[i].style.backgroundColor="red";
+				setTimeout(function(){
+					divs[i].style.backgroundColor="white";
+				},5000);
+			} else {
+				alert("no such node");
+			}
+		}
+		function Add() {
+			var searchNodee=document.getElementById("search");
+			for(var i=0;i<divsValue.length;i++) {
+				if(divsValue[i]==searchNodee.value) {
+					break;
+				}
+			}
+			if(i>=0&&i<divsValue.length) {
+				var boxes=document.createElement ("div");
+				boxes.setAttribute("class","box");
+				boxes.innerHTML=searchNodee.value;
+				divs.item(i).insertBefore(boxes,divs.firstChild);
+			} else {
+				alert("error");
+			}
+		}
+		function Del() {
+			var searchNodee=document.getElementById("search");
+			for(var i=0;i<divsValue.length;i++) {
+				if(divsValue[i]==searchNodee.value) {
+					break;
+				}
+			}
+			if(i>=0&&i<divsValue.length) {
+				divs.item(i).removeChild(divs.item(i).firstChild);
+			} else {
+				alert("error");
+			}
+		}
+		// function lastSearch(node) {
+		// 	var searchNum=document.getElementById("search");
+		// 	for(var i=0;i<node.children.length;i++) {
+		// 		if(searchNum.value==node.children[i].innerHTML) {
+		// 			node.children[i].style.backgroundColor="green";
+		// 			return ;
+		// 		}
+		// 		preOrder((node.children[i]));
+		// 	}
+		// 	treeNodes.push(node);
+		// 	http://aldrichfork.com/baidu_front_end_school/task9.html
+		// 	https://github.com/AldrichFork/baidu_front_end_school/blob/master/task9.html
+		// }
+		function changeColor(){
+			var i=0;
+			treeNodes[i].style.backgroundColor="red";
+			time=setInterval(function(){
+				i++;
+				if(i<treeNodes.length){
+					treeNodes[i-1].style.backgroundColor="white";
+					treeNodes[i].style.backgroundColor="red";
+				} else {
+					clearInterval(time);
+					treeNodes[i].style.backgroundColor="white";
+				}
+			},700)
+		}
+		function reset() {
+			treeNodes=[];
+			clearInterval(time);
+			for(var i=0;i<divs.length;i++) {
+				divs[i].style.backgroundColor="white"
+			}
+		}
+		function init(){
+			var btnFront=document.getElementById("front");
+			btnFront.onclick=function(){
+				reset();
+				preOrder(treeAncestor);
+				changeColor();
+			}
+			var btnBehind=document.getElementById("behind");
+			btnBehind.onclick=function(){
+				reset();
+				lastOrder(treeAncestor);
+				changeColor();
+			}
+			var btnSearch=document.getElementById("searchNode");
+			btnSearch.onclick=function(){
+				Search();
+			}
+			var btnAdd=document.getElementById("add");
+			btnAdd.onclick=function(){
+				Add();
+			}
+			var btnDel=document.getElementById("del");
+			btnDel.onclick=function(){
+				Del();
+			}
+		}
+		init();
+	</script>
+
+	
+</body>
+</html>
